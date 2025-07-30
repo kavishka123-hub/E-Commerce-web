@@ -926,7 +926,36 @@ footer a:hover{
 
     list-style: none;
     display: flex;
-    padding: 10px o;
+    padding: 10px 0;
+}
+
+#contact-details .details li i{
+
+  font-size: 14px;
+  padding-right:22px;
+
+}
+
+#contact-details .details li p{
+
+ 
+   margin: 0;
+   font-size: 14px;
+
+}
+
+#contact-details .map{
+
+   width: 50%;
+   height: 400px;
+
+}
+
+#contact-details .map iframe{
+
+   width: 100%;
+   height:100%;
+
 }
 
 
