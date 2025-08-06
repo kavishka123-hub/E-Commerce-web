@@ -450,7 +450,7 @@ button.white{
     justify-content: center;
     align-items: flex-start;
     text-align: center;
-    background-image: url("Images/shjpg");
+    background-image: url("Images/Shirts/Kavi_1.jpg");
     min-width: 30%;
     height: 30vh;
     background-size: cover;
@@ -487,13 +487,13 @@ button.white{
 
 #banner3 .banner-box2{
 
-    background-image: url("Images/banner/b4.jpg");
+    background-image: url("Images/Shirts/Kavi_6.jpg");
 
 }
 
 #banner3 .banner-box3{
 
-    background-image: url("Images/banner/b18.jpg");
+    background-image: url("Images/Shirts/Kavi_8.jpg");
 
 }
 
