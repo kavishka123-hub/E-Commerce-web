@@ -73,8 +73,8 @@
 
             </select>
 
-            <input type = "number" value="1">
-            <button class="normal" onclick="window.location.href='cart.html'">Add to Cart</button>
+            <input type = "number" id="quantityInput" value="1" min="1">
+            <button id="addToCartBtn" class="normal">Add to Cart</button>
             <h4>Product Details</h4>
             <span>
                 The shirt features a teal base color with an all-over design of orange and brown flowers and leaves. It has a casual fit with a collar, a front button closure, and rolled-up sleeves. The shirt appears to be made of a lightweight, possibly linen or cotton-blend fabric, suitable for warm weather. Additional views suggest it has a relaxed, slightly curved hemline. For specific details such as size, material composition, care instructions, or pricing
@@ -255,26 +255,71 @@
             MainImg.src = smallimg[3].src;
         }
 
-         document.getElementById('addToCartBtn').addEventListener('click', function() {
-            // Get product details
-            const product = {
-                name: document.getElementById('productName').textContent,
-                price: parseInt(document.getElementById('productPrice').textContent.replace('Rs.', '')),
-                quantity: parseInt(document.getElementById('quantityInput').value),
-                size: document.getElementById('sizeSelect').value,
-                image: "Images/Shirts/H_S.jpg",
-                subtotal: parseInt(document.getElementById('productPrice').textContent.replace('Rs.', '')) * 
-                          parseInt(document.getElementById('quantityInput').value)
-            };
+           document.addEventListener('DOMContentLoaded', function() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const cartItemsContainer = document.getElementById("cartItems");
+            const cartSubtotal = document.getElementById("cartSubtotal");
+            const cartTotal = document.getElementById("cartTotal");
             
-            // Save to localStorage
-            localStorage.setItem('cartProduct', JSON.stringify(product));
-            
-            // Redirect to cart page
-            window.location.href = 'cart.html';
-        });
-            
-    
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<tr><td colspan="6">Your cart is empty</td></tr>';
+                cartSubtotal.textContent = 'Rs.0';
+                cartTotal.textContent = 'Rs.0';
+            } else {
+                let total = 0;
+                let cartHTML = '';
+                
+                cart.forEach((item, index) => {
+                    const itemSubtotal = item.price * item.quantity;
+                    total += itemSubtotal;
+                    
+                    cartHTML += `
+                        <tr>
+                            <td><a href="#" class="remove-item" data-index="${index}"><i class="far fa-times-circle"></i></a></td>
+                            <td><img src="${item.image}" alt="${item.name}"></td>
+                            <td>${item.name} (${item.size})</td>
+                            <td>Rs.${item.price.toFixed(2)}</td>
+                            <td><input type="number" class="item-quantity" data-index="${index}" value="${item.quantity}" min="1"></td>
+                            <td class="item-subtotal">Rs.${itemSubtotal.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+                
+                cartItemsContainer.innerHTML = cartHTML;
+                cartSubtotal.textContent = `Rs.${total.toFixed(2)}`;
+                cartTotal.textContent = `Rs.${total.toFixed(2)}`;
+                
+                // Add event listeners for quantity changes
+                document.querySelectorAll('.item-quantity').forEach(input => {
+                    input.addEventListener('change', function() {
+                        const index = this.getAttribute('data-index');
+                        const newQuantity = parseInt(this.value);
+                        cart[index].quantity = newQuantity;
+                        
+                        // Update localStorage
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        
+                        // Reload to update totals
+                        location.reload();
+                    });
+                });
+                
+                // Add event listeners for remove buttons
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const index = this.getAttribute('data-index');
+                        cart.splice(index, 1);
+                        
+                        // Update localStorage
+                        localStorage.setItem("cart", JSON.stringify(cart));
+                        
+                        // Reload to update display
+                        location.reload();
+                    });
+                });
+            }
+        })
 
 
 
