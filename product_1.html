@@ -74,7 +74,7 @@
             </select>
 
             <input type = "number" value="1">
-            <button class="normal">Add to Cart</button>
+            <button class="normal" onclick="window.location.href='cart.html'">Add to Cart</button>
             <h4>Product Details</h4>
             <span>
                 The shirt features a teal base color with an all-over design of orange and brown flowers and leaves. It has a casual fit with a collar, a front button closure, and rolled-up sleeves. The shirt appears to be made of a lightweight, possibly linen or cotton-blend fabric, suitable for warm weather. Additional views suggest it has a relaxed, slightly curved hemline. For specific details such as size, material composition, care instructions, or pricing
@@ -255,12 +255,39 @@
             MainImg.src = smallimg[3].src;
         }
 
+         document.getElementById('addToCartBtn').addEventListener('click', function() {
+            // Get product details
+            const product = {
+                name: document.getElementById('productName').textContent,
+                price: parseInt(document.getElementById('productPrice').textContent.replace('Rs.', '')),
+                quantity: parseInt(document.getElementById('quantityInput').value),
+                size: document.getElementById('sizeSelect').value,
+                image: "Images/Shirts/H_S.jpg",
+                subtotal: parseInt(document.getElementById('productPrice').textContent.replace('Rs.', '')) * 
+                          parseInt(document.getElementById('quantityInput').value)
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('cartProduct', JSON.stringify(product));
+            
+            // Redirect to cart page
+            window.location.href = 'cart.html';
+        });
+            
+    
+
+
+
     </script>
 
 
 
 
 
-    <script src="script.js"></script>
+    <script src="script.js">
+
+        
+
+    </script>
 </body>    
 </html>

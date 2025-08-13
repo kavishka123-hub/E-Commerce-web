@@ -187,10 +187,66 @@
  
     </footer>
 
+    <script>
+             document.addEventListener('DOMContentLoaded', function() {
+            const cartProduct = JSON.parse(localStorage.getItem('cartProduct'));
+            const cartItemsContainer = document.getElementById('cartItems');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            if (cartProduct) {
+                // Display the product in cart
+                cartItemsContainer.innerHTML = `
+                    <tr>
+                        <td><a href="#" id="removeItem"><i class="far fa-times-circle"></i></a></td>
+                        <td><img src="${cartProduct.image}" alt="${cartProduct.name}"></td>
+                        <td>${cartProduct.name} (${cartProduct.size})</td>
+                        <td>Rs.${cartProduct.price}</td>
+                        <td><input type="number" id="cartQuantity" value="${cartProduct.quantity}" min="1"></td>
+                        <td id="itemSubtotal">Rs.${cartProduct.subtotal}</td>
+                    </tr>
+                `;
+                
+                // Update totals
+                cartSubtotal.textContent = `Rs.${cartProduct.subtotal}`;
+                cartTotal.textContent = `Rs.${cartProduct.subtotal}`;
+                
+                // Quantity change handler
+                document.getElementById('cartQuantity').addEventListener('change', function() {
+                    const newQuantity = parseInt(this.value);
+                    const newSubtotal = cartProduct.price * newQuantity;
+                    
+                    // Update displayed values
+                    document.getElementById('itemSubtotal').textContent = `Rs.${newSubtotal}`;
+                    cartSubtotal.textContent = `Rs.${newSubtotal}`;
+                    cartTotal.textContent = `Rs.${newSubtotal}`;
+                    
+                    // Update localStorage
+                    cartProduct.quantity = newQuantity;
+                    cartProduct.subtotal = newSubtotal;
+                    localStorage.setItem('cartProduct', JSON.stringify(cartProduct));
+                });
+                
+                // Remove item handler
+                document.getElementById('removeItem').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('cartProduct');
+                    location.reload();
+                });
+            } else {
+                cartItemsContainer.innerHTML = '<tr><td colspan="6">Your cart is empty</td></tr>';
+            }
+        });
+    </script>
 
 
 
 
-    <script src="script.js"></script>
+
+    <script src="script.js">
+
+       
+
+    </script>
 </body>    
 </html>
